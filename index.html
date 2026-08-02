@@ -828,7 +828,10 @@ footer img{height:clamp(40px,5.5vw,56px);width:auto;flex-shrink:0;}
           <h3>Solicita tu cotización</h3>
           <p class="form-note">Completa tus datos y te contactamos en máximo 2 horas.</p>
 
-          <form id="contactForm" action="https://formspree.io/f/maqrzglk" method="POST">
+          <form id="contactForm" action="https://formspree.io/f/maqrzglk" method="POST" accept-charset="UTF-8">
+            <input type="hidden" name="_subject" value="Nueva solicitud de cotización - CANN">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://canning57.github.io/website/gracias.html">
             <div class="row-2">
               <div class="field">
                 <label for="nombre">Nombre completo *</label>
@@ -974,37 +977,6 @@ const mobileMenu = document.getElementById('mobileMenu');
 burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
 document.querySelectorAll('.mlink').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-// Contact form -> WhatsApp deep link + on-page confirmation
-const form = document.getElementById('contactForm');
-const successBox = document.getElementById('formSuccess');
-const successName = document.getElementById('successName');
-
-form.addEventListener('submit', function(e){
-  e.preventDefault();
-
-  const nombre = document.getElementById('nombre').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const lugar = document.getElementById('lugar').value.trim();
-  const maquinaria = document.getElementById('maquinariaSelect').value;
-  const mensaje = document.getElementById('mensaje').value.trim();
-
-  // Envía la solicitud a Formspree: llega por correo a canining@gmail.com
-  // y queda guardada automáticamente en el panel de Formspree.
-  fetch('https://formspree.io/f/maqrzglk', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body: JSON.stringify({
-      _subject: 'NUEVO POTENCIAL CLIENTE - ' + nombre,
-      nombre, telefono, correo, lugar, maquinaria, mensaje
-    })
-  }).catch(err => console.error('Formspree error:', err));
-
-  // Confirmación en pantalla
-  successName.textContent = ', ' + nombre.split(' ')[0];
-  form.style.display = 'none';
-  successBox.classList.add('show');
-});
 </script>
 
 </body>
