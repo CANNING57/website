@@ -7,13 +7,13 @@
 <meta name="description" content="CANN: más de 50 años de experiencia en alquiler de maquinaria, adecuación de terrenos, movimientos de tierra, asesorías y demolición en Cundinamarca y Boyacá. Movilización al día siguiente de confirmar el trabajo.">
 <meta name="keywords" content="alquiler de maquinaria pesada, renta de maquinaria Cundinamarca, alquiler retroexcavadora, alquiler minicargador, alquiler bulldozer, alquiler excavadora, movimiento de tierra, adecuación de terrenos, demolición y extracción, maquinaria para construcción Sopó, maquinaria pesada Boyacá, asesoría en obra civil">
 <meta name="author" content="CANN">
-<link rel="canonical" href="https://canning57.github.io/Cann-website/">
+<link rel="canonical" href="https://canning57.github.io/website/">
 
 <!-- Open Graph (vista previa al compartir en WhatsApp, Facebook, Instagram) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="CANN | Alquiler de Maquinaria Pesada · Cundinamarca y Boyacá">
 <meta property="og:description" content="Más de 50 años de experiencia en alquiler de maquinaria, adecuación de terrenos, movimientos de tierra, asesorías y demolición. Movilización al día siguiente de confirmar el trabajo.">
-<meta property="og:url" content="https://canning57.github.io/Cann-website/">
+<meta property="og:url" content="https://canning57.github.io/website/">
 <meta property="og:locale" content="es_CO">
 <meta property="og:site_name" content="CANN">
 <meta name="twitter:card" content="summary_large_image">
@@ -25,7 +25,7 @@
   "@type": "LocalBusiness",
   "name": "CANN",
   "description": "Alquiler de maquinaria pesada, adecuación de terrenos, movimientos de tierra, asesorías profesionales y demolición. Más de 50 años de experiencia.",
-  "image": "https://canning57.github.io/Cann-website/img/logo-negativo.png",
+  "image": "https://canning57.github.io/website/img/logo-negativo.png",
   "telephone": "+57-310-329-2272",
   "email": "canining@gmail.com",
   "address": {
@@ -523,8 +523,17 @@ section{padding:96px 0;}
   padding:26px;text-align:center;
 }
 .form-success.show{display:block;}
+.form-success[hidden]{display:none !important;}
+.form-success:not([hidden]){display:block;}
 .form-success b{color:var(--yellow);font-size:18px;display:block;margin-bottom:6px;text-transform:uppercase;}
 .form-success p{color:var(--stone);font-size:14px;margin:0;}
+.form-error{
+  display:none;
+  background:rgba(220,60,60,.12);border:1px solid #dc3c3c;
+  color:#ffb3b3;font-size:13px;
+  padding:12px 14px;margin-bottom:16px;
+}
+.form-error:not(:empty){display:block;}
 
 /* ---------- footer ---------- */
 footer{background:var(--dark);border-top:1px solid rgba(255,255,255,.1);padding:56px 0;}
@@ -832,24 +841,24 @@ footer img{height:clamp(40px,5.5vw,56px);width:auto;flex-shrink:0;}
             <div class="row-2">
               <div class="field">
                 <label for="nombre">Nombre completo *</label>
-                <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Pérez">
+                <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Pérez" data-fs-field>
               </div>
               <div class="field">
                 <label for="telefono">Teléfono *</label>
-                <input type="tel" id="telefono" name="telefono" required placeholder="Ej: 310 000 0000">
+                <input type="tel" id="telefono" name="telefono" required placeholder="Ej: 310 000 0000" data-fs-field>
               </div>
             </div>
             <div class="field">
               <label for="correo">Correo electrónico *</label>
-              <input type="email" id="correo" name="correo" required placeholder="tucorreo@ejemplo.com">
+              <input type="email" id="correo" name="correo" required placeholder="tucorreo@ejemplo.com" data-fs-field>
             </div>
             <div class="field">
               <label for="lugar">Lugar de la obra *</label>
-              <input type="text" id="lugar" name="lugar" required placeholder="Municipio / vereda / dirección">
+              <input type="text" id="lugar" name="lugar" required placeholder="Municipio / vereda / dirección" data-fs-field>
             </div>
             <div class="field">
               <label for="maquinariaSelect">¿Qué maquinaria necesitas? *</label>
-              <select id="maquinariaSelect" name="maquinaria" required>
+              <select id="maquinariaSelect" name="maquinaria" required data-fs-field>
                 <option value="" disabled selected>Selecciona una opción</option>
                 <option value="A. RetroExcavadora">A. RetroExcavadora</option>
                 <option value="B. Minicargador">B. Minicargador</option>
@@ -862,12 +871,13 @@ footer img{height:clamp(40px,5.5vw,56px);width:auto;flex-shrink:0;}
             </div>
             <div class="field">
               <label for="mensaje">Mensaje (opcional)</label>
-              <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente qué necesitas..."></textarea>
+              <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente qué necesitas..." data-fs-field></textarea>
             </div>
-            <button type="submit" class="submit-btn">Enviar solicitud</button>
+            <div data-fs-error class="form-error"></div>
+            <button type="submit" class="submit-btn" data-fs-submit-btn>Enviar solicitud</button>
           </form>
 
-          <div class="form-success" id="formSuccess">
+          <div class="form-success" id="formSuccess" data-fs-success hidden>
             <b>¡Solicitud recibida!</b>
             <p>Gracias<span id="successName"></span>, tu solicitud fue enviada. Te contactaremos en un máximo de 2 horas.</p>
           </div>
@@ -974,38 +984,32 @@ const mobileMenu = document.getElementById('mobileMenu');
 burgerBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
 document.querySelectorAll('.mlink').forEach(l => l.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-// Contact form -> WhatsApp deep link + on-page confirmation
+// Formulario de contacto: solo tomamos el nombre para personalizar el
+// mensaje de éxito. El envío real a Formspree lo maneja @formspree/ajax
+// (cargado al final del documento), que también oculta el formulario
+// y muestra #formSuccess automáticamente cuando el envío es exitoso.
 const form = document.getElementById('contactForm');
-const successBox = document.getElementById('formSuccess');
 const successName = document.getElementById('successName');
 
-form.addEventListener('submit', function(e){
-  e.preventDefault();
-
+form.addEventListener('submit', function(){
   const nombre = document.getElementById('nombre').value.trim();
-  const telefono = document.getElementById('telefono').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const lugar = document.getElementById('lugar').value.trim();
-  const maquinaria = document.getElementById('maquinariaSelect').value;
-  const mensaje = document.getElementById('mensaje').value.trim();
-
-  // Envía la solicitud a Formspree: llega por correo a canining@gmail.com
-  // y queda guardada automáticamente en el panel de Formspree.
-  fetch('https://formspree.io/f/maqrzglk', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body: JSON.stringify({
-      _subject: 'NUEVO POTENCIAL CLIENTE - ' + nombre,
-      nombre, telefono, correo, lugar, maquinaria, mensaje
-    })
-  }).catch(err => console.error('Formspree error:', err));
-
-  // Confirmación en pantalla
-  successName.textContent = ', ' + nombre.split(' ')[0];
-  form.style.display = 'none';
-  successBox.classList.add('show');
+  if (successName && nombre) successName.textContent = ', ' + nombre.split(' ')[0];
 });
+
+const successBox = document.getElementById('formSuccess');
+if (successBox){
+  new MutationObserver(() => {
+    if (!successBox.hasAttribute('hidden')) form.style.display = 'none';
+  }).observe(successBox, { attributes: true, attributeFilter: ['hidden'] });
+}
 </script>
+
+<!-- Integración oficial de Formspree para formularios en JavaScript puro -->
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contactForm', formId: 'maqrzglk' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
 </body>
 </html>
